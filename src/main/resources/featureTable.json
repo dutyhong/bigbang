@@ -1,0 +1,8 @@
+{
+  "tableName": "xf_wht_calls_6m_samples_final_result",
+  "labelName": "bad_tag",
+  "selectedFeatureNum": "50",
+  "selectMethod": "rf",
+  "selectedFeatureThreshold": "0.02",
+  "otherColumnNames":["aid","bad_tag"]
+}

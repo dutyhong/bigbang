@@ -1,0 +1,49 @@
+drop table if exists ads_model_repeat_buyer_prediction_details2_merchant_id_statistic
+create table ads_model_repeat_buyer_prediction_details2_merchant_id_statistic 
+ as 
+ select 
+merchant_id,count (item_id) as c_item_id,
+count (distinct item_id) as cd_item_id,
+count (time_stamp) as c_time_stamp,
+count (distinct time_stamp) as cd_time_stamp,
+count (brand_id) as c_brand_id,
+count (distinct brand_id) as cd_brand_id,
+count (category_id) as c_category_id,
+count (distinct category_id) as cd_category_id,
+count (action_type) as c_action_type,
+count (distinct action_type) as cd_action_type
+ from ads_model_repeat_buyer_prediction_details2
+ group by merchant_id
+drop table if exists ads_model_repeat_buyer_prediction_details2_user_id_statistic
+create table ads_model_repeat_buyer_prediction_details2_user_id_statistic 
+ as 
+ select 
+user_id,count (item_id) as c_item_id,
+count (distinct item_id) as cd_item_id,
+count (time_stamp) as c_time_stamp,
+count (distinct time_stamp) as cd_time_stamp,
+count (brand_id) as c_brand_id,
+count (distinct brand_id) as cd_brand_id,
+count (category_id) as c_category_id,
+count (distinct category_id) as cd_category_id,
+count (action_type) as c_action_type,
+count (distinct action_type) as cd_action_type
+ from ads_model_repeat_buyer_prediction_details2
+ group by user_id
+drop table if exists ads_model_repeat_buyer_prediction_details2_user_id_merchant_id_statistic
+create table ads_model_repeat_buyer_prediction_details2_user_id_merchant_id_statistic 
+ as 
+ select 
+user_id,
+merchant_id,count (item_id) as c_item_id,
+count (distinct item_id) as cd_item_id,
+count (time_stamp) as c_time_stamp,
+count (distinct time_stamp) as cd_time_stamp,
+count (brand_id) as c_brand_id,
+count (distinct brand_id) as cd_brand_id,
+count (category_id) as c_category_id,
+count (distinct category_id) as cd_category_id,
+count (action_type) as c_action_type,
+count (distinct action_type) as cd_action_type
+ from ads_model_repeat_buyer_prediction_details2
+ group by user_id,merchant_id

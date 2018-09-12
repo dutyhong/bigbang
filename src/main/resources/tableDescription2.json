@@ -1,0 +1,57 @@
+{
+  "tableName": "xf_basic_idno_sample",
+  "tableDesc": "反欺诈数据表",
+  "labelName":"bad_tag",
+  "partitionNum":"2",
+  "fieldInfos": [
+    {
+      "fieldName": "idno",
+      "fieldType": "BIGINT",
+      "isPrimaryKey": "true"
+    },
+    {
+      "fieldName": "bad_tag",
+      "fieldType": "BIGINT",
+      "isPrimaryKey": "false"
+    },
+    {
+      "fieldName": "address_detail",
+      "fieldType": "STRING",
+      "isPrimaryKey": "FALSE"
+    },
+    {
+      "fieldName": "main_contact_name",
+      "fieldType": "STRING",
+      "isPrimaryKey": "FALSE"
+    },
+    {
+      "fieldName": "main_contact_tel",
+      "fieldType": "STRING",
+      "isPrimaryKey": "FALSE"
+    },{
+      "fieldName": "bind_mob",
+      "fieldType": "STRING",
+      "isPrimaryKey": "FALSE"
+    },{
+      "fieldName": "created_time",
+      "fieldType": "STRING",
+      "isPrimaryKey": "FALSE"
+    }
+  ],
+  "dateSliceDOs":[
+    {
+      "sliceType":"month" ,
+      "sliceTypeInterval":6 ,
+      "sliceNum":1,
+      "endTime":"2017-05-03 00:00:00",
+      "fieldName":"created_time",
+      "fieldType":"date"
+    }
+  ],
+  "fieldAggMethods": {
+    "address_detail":["cd"],
+    "main_contact_tel":["cd"],
+    "bind_mob":["cd"],
+    "company_name":["cd"]
+  }
+}

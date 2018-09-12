@@ -1,0 +1,109 @@
+{
+  "tableName": "xf_wht_calls_6m_samples",
+  "tableDesc": "反欺诈数据表",
+  "labelName":"bad_tag",
+  "partitionNum":"20",
+  "primaryKeys":["aid"],
+//  "fieldInfos": [
+//    {
+//      "fieldName": "aid",
+//      "fieldType": "BIGINT",
+//      "isPrimaryKey": "true"
+//    },
+//    {
+//      "fieldName": "bad_tag",
+//      "fieldType": "BIGINT",
+//      "isPrimaryKey": "false"
+//    },
+//    {
+//      "fieldName": "apply_time",
+//      "fieldType": "STRING",
+//      "isPrimaryKey": "FALSE"
+//    },
+//    {
+//      "fieldName": "other_cell_phone",
+//      "fieldType": "STRING",
+//      "isPrimaryKey": "FALSE"
+//    },
+//    {
+//      "fieldName": "call_place",
+//      "fieldType": "STRING",
+//      "isPrimaryKey": "FALSE"
+//    },{
+//      "fieldName": "start_time",
+//      "fieldType": "STRING",
+//      "isPrimaryKey": "FALSE"
+//    },{
+//      "fieldName": "use_time",
+//      "fieldType": "BIGINT",
+//      "isPrimaryKey": "FALSE"
+//    },{
+//      "fieldName": "call_type",
+//      "fieldType": "BIGINT",
+//      "isPrimaryKey": "FALSE"
+//    },{
+//      "fieldName": "substotal",
+//      "fieldType": "DOUBLE",
+//      "isPrimaryKey": "FALSE"
+//    },{
+//      "fieldName": "init_type",
+//      "fieldType": "BIGINT",
+//      "isPrimaryKey": "FALSE"
+//    },{
+//      "fieldName": "begin_date",
+//      "fieldType": "STRING",
+//      "isPrimaryKey": "FALSE"
+//    },{
+//      "fieldName": "end_date",
+//      "fieldType": "STRING",
+//      "isPrimaryKey": "FALSE"
+//    }
+//  ],
+  "numericSliceDOs":[
+    {
+      "min":0.0 ,
+      "max":120,
+      "sliceNum":12,
+      "fieldName":"use_time",
+      "fieldType":"numeric"
+    }
+  ],
+
+  "categoricalSliceDOs":[
+    {
+      "categoricalValues":[
+        "1",
+        "2"
+      ],
+      "fieldName":"init_type",
+      "fieldType":"categorical"
+    }
+  ],
+
+  //  "dateSliceDOs":[
+  //    {
+  //      "sliceType":"month" ,
+  //      "sliceTypeInterval":1 ,
+  //      "sliceNum":9,
+  //      "endTime":"2017-11-11 00:00:00",
+  //      "fieldName":"start_time",
+  //      "fieldType":"date"
+  //    }
+  //  ],
+  "userDefinedSliceDOs":[
+    {
+      "min":0.0,
+      "max":180.0,
+      "sliceNum":6,
+      "expression":"datediff(apply_time, start_time)",
+      "fieldName":"months",
+      "fieldType":"numeric"
+    }
+  ]
+,
+  "fieldAggMethods": {
+    "start_time":["c"],
+    "other_cell_phone":["cd"],
+    "use_time":["sum"]
+  }
+}

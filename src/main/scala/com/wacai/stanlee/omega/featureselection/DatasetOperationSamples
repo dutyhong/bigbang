@@ -1,0 +1,95 @@
+JavaRDD<Row> rowRdd = newData.toJavaRDD().map(new Function<Row, Row>() {
+            @Override
+            public Row call(Row row) throws Exception {
+
+                return RowFactory.create(Double.parseDouble(row.getString(0)), Double.parseDouble(row.getString(1)),
+                        Double.parseDouble(row.getString(2)), Double.parseDouble(row.getString(3)), row.getInt(4), 1.0);
+            }
+        });
+
+        //sepal_length|sepal_width|petal_length|petal_width|species
+
+
+        ArrayList<StructField> fields = new ArrayList<StructField>();
+        StructField field = null;
+        field = DataTypes.createStructField("sepal_length", DataTypes.DoubleType, true);
+        fields.add(field);
+        field = DataTypes.createStructField("sepal_width", DataTypes.DoubleType, true);
+        fields.add(field);
+        field = DataTypes.createStructField("petal_length", DataTypes.DoubleType, true);
+        fields.add(field);
+        field = DataTypes.createStructField("petal_width", DataTypes.DoubleType, true);
+        fields.add(field);
+        field = DataTypes.createStructField("label", DataTypes.IntegerType, true);
+        fields.add(field);
+        field = DataTypes.createStructField("useless", DataTypes.DoubleType, true);
+        fields.add(field);
+
+        StructType schema = DataTypes.createStructType(fields);
+
+        Dataset<Row> df = spark.createDataFrame(rowRdd, schema);
+        df.show();
+
+
+        //测试矢量切片操作
+        //        String[]
+                VectorAssembler vectorAssembler = new VectorAssembler().setInputCols(featureNames).setOutputCol("aggFeatureNames");
+                df = vectorAssembler.transform(df);
+                Dataset<Row> newDf = df.select("aggFeatureNames", "label");
+                System.out.println("new Df show :");
+                newDf.show();
+                VectorSlicer vectorSlicer = new VectorSlicer().setInputCol("aggFeatureNames").setOutputCol( "selectedFeatures");
+                vectorSlicer.setIndices(new int[]{0,2,3}); //
+
+
+
+
+     package com.wacai.stanlee.omega.featureselection
+
+     import org.apache.spark.sql.DataFrameReader
+
+     /**
+       * @author manshahua@wacai.com
+       * @date 2017/12/25 上午11:59
+       */
+     object FeatureSelectTest {
+       def main(args: Array[String]): Unit = {
+         val labelName = "label"
+         val tableName = "ads_model_repeat_buyer_predict_train"
+         val otherColumnNames = List("user_id", "merchant_id")
+         val featureTable:FeatureTable = new FeatureTable(tableName,labelName,otherColumnNames)
+         //根据特征表获得特征输入特征选择器的输入参数
+         val dataFrameReader:DataFrameReader = new DataFrameReader()
+         val dataReader = dataFrameReader.table(featureTable.getTableName)
+         val columnNames = dataReader.columns
+
+       }
+     }
+
+
+//生成选择器的iris测试数据集
+ Dataset<Row> data = spark.read().option("header", "true").csv("/Users/duty/Documents/iris.txt");
+        DataFrameWriter dataFrameWriter = new DataFrameWriter(data);
+        dataFrameWriter.saveAsTable("iris_train_data");
+        spark.sql("select * from iris_train_data limit 10").show();
+        System.out.println("原始data： ");
+        data.show();
+        data.printSchema();
+
+        Dataset<Row> newData = data.selectExpr("sepal_length","sepal_width","petal_length","petal_width","case when species = \'setosa\' then 1 \n" +
+                "when species = \'versicolor\' then 2\n" +
+                "when species = \'virginica\' then 3\n" +
+                "end as label");
+        newData.show();
+        newData = newData.withColumn("userless", functions.lit(1.0));
+        System.out.println("新增一列之后的data： ");
+        newData.show();
+        newData = newData.withColumn("sepal_length",functions.col("sepal_length").cast("double"));
+        newData = newData.withColumn("sepal_width",functions.col("sepal_width").cast("double"));
+        newData = newData.withColumn("petal_length",functions.col("petal_length").cast("double"));
+        newData = newData.withColumn("petal_width",functions.col("petal_width").cast("double"));
+        spark.sql("drop table iris_train_data");
+        newData.printSchema();
+        DataFrameWriter dataFrameWriter = new DataFrameWriter(newData);
+        dataFrameWriter.saveAsTable("iris_train_data");
+        spark.sql("select * from iris_train_data limit 20").show();
